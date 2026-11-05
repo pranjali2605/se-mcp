@@ -1,0 +1,23 @@
+{
+  "name": "se-mcp",
+  "version": "1.0.0",
+  "description": "SE-MCP: An AI-powered Model Context Protocol framework for intelligent software engineering",
+  "type": "module",
+  "main": "build/index.js",
+  "bin": { "se-mcp": "build/index.js" },
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/index.js",
+    "test": "npm run build && node --test tests/"
+  },
+  "keywords": ["mcp", "model-context-protocol", "software-engineering", "ai"],
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "student-api",
+  "version": "1.0.0",
+  "description": "Sample Student Management API used to demo SE-MCP (contains intentional defects)",
+  "main": "src/server.js",
+  "dependencies": {
+    "express": "4.16.0",
+    "lodash": "4.17.4",
+    "minimist": "0.0.8"
+  }
+}
