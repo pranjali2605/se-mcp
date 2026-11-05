@@ -3,3 +3,8 @@ build/
 .cache/
 logs/
 *.log
+eval/repos/
+eval/responses/
+eval/logs/
+eval/results/
+eval/manual-scores.csv

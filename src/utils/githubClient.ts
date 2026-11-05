@@ -1,4 +1,5 @@
 import { cached } from "./cache.js";
+import { networkError } from "./osvClient.js";
 
 export interface IssueData {
   number: number;
@@ -19,7 +20,9 @@ export function parseIssueRef(input: string): { owner: string; repo: string; num
 async function gh<T>(url: string): Promise<T> {
   const headers: Record<string, string> = { Accept: "application/vnd.github+json", "User-Agent": "se-mcp" };
   if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
-  const res = await fetch(url, { headers });
+  const res = await fetch(url, { headers }).catch((e) => {
+    throw networkError(e);
+  });
   if (res.status === 403 || res.status === 429) throw new Error("GitHub rate limit reached; set GITHUB_TOKEN or retry later");
   if (!res.ok) throw new Error(`GitHub request failed: ${res.status} ${res.statusText}`);
   return (await res.json()) as T;

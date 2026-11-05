@@ -1,7 +1,7 @@
 import { fetchIssue, parseIssueRef, IssueData } from "../utils/githubClient.js";
 import { searchCode } from "./searchCode.js";
 
-const STOP = new Set("the a an and or but if is are was were be to of in on for with this that it as at by from not when then than have has had can could should would will does did into out up about error issue bug fix add use using need want please thanks".split(" "));
+const STOP = new Set("the a an and or but if is are was were be to of in on for with this that it as at by from not when then than have has had can could should would will does did into out up about error issue bug fix add use using need want please thanks better over coming wire also just like some more make which there their them they what where while been being because other these those same only very much many such currently still should maybe actually really something anything".split(" "));
 
 export function extractKeywords(text: string, limit = 8): string[] {
   const counts = new Map<string, number>();

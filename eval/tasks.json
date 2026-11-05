@@ -1,0 +1,14 @@
+{
+  "description": "Repositories and task types for the SE-MCP comparative evaluation (normal AI chat vs MCP-grounded AI).",
+  "repos": [
+    { "id": "student-api", "path": "../samples/student-api", "language": "JavaScript", "note": "Self-created sample with seeded defects (ground truth known by construction)." },
+    { "id": "cors", "url": "https://github.com/expressjs/cors", "language": "JavaScript", "issue": "expressjs/cors#422" },
+    { "id": "requests", "url": "https://github.com/psf/requests", "language": "Python", "issue": "psf/requests#7639" }
+  ],
+  "taskTypes": [
+    { "id": "architecture", "label": "Architecture explanation", "prompt": "Analyze this repository and explain its architecture: main folders, important files and how they relate." },
+    { "id": "dependency", "label": "Dependency risk", "prompt": "List the project's dependencies, say which are outdated or have known vulnerabilities, and what should be upgraded first." },
+    { "id": "test-generation", "label": "Test generation", "prompt": "Generate unit test cases (normal, boundary and failure) for the file {{testFile}}." },
+    { "id": "issue-summary", "label": "Issue summarisation", "prompt": "Summarize GitHub issue {{issue}} and say which files or functions of this repository are probably involved." }
+  ]
+}

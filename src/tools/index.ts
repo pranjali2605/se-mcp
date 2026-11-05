@@ -24,7 +24,7 @@ function wrap<A>(name: string, fn: (args: A) => Promise<string | object>) {
       return { content: [{ type: "text", text }] };
     } catch (e) {
       const text = `Error: ${(e as Error).message}`;
-      await logCall(name, args, false, Date.now() - t, text.length);
+      await logCall(name, args, false, Date.now() - t, text.length, (e as Error).message);
       return { content: [{ type: "text", text }], isError: true };
     }
   };
@@ -77,7 +77,7 @@ export function registerAllTools(server: McpServer): void {
   server.registerTool(
     "dependency_risk_scan",
     {
-      description: "Parse package.json, requirements.txt and pom.xml and check dependencies against the public OSV.dev vulnerability database.",
+      description: "Parse package.json, requirements.txt and pom.xml; check dependencies against the public OSV.dev vulnerability database and npm/PyPI registries for known vulnerabilities and outdated versions.",
       inputSchema: { repo, offline: z.boolean().optional().describe("Skip network lookups") },
     },
     wrap("dependency_risk_scan", async (a: { repo: string; offline?: boolean }) => dependencyRiskScan(await resolveSource(a.repo), !a.offline)),

@@ -55,13 +55,18 @@ thin README, a `FIXME`, a function with edge cases). Ask your client:
 
 ## Evaluation
 
-Every tool call is logged to `logs/tool-calls.jsonl` (timestamp, tool, input, duration) so answers can be traced
-to evidence. Compare normal AI chat vs MCP-grounded answers using the metrics in the project report
-(accuracy, hallucination count, completeness, usefulness, time).
+Every tool call is logged to `logs/tool-calls.jsonl` (timestamp, session_id, task_id, tool, input, duration, status) so
+answers can be traced to evidence. The reproducible chat-vs-MCP protocol (public repos, ground truth, scoring) is in
+[`eval/README.md`](eval/README.md): `node eval/prepare.mjs`, collect responses, `node eval/score.mjs`.
+
+`dependency_risk_scan` reports known vulnerabilities (OSV.dev) and outdated packages (npm / PyPI registries) for
+package.json, pom.xml, pyproject.toml and requirements*.txt. If a TLS-intercepting proxy blocks the request, set
+`NODE_EXTRA_CA_CERTS` to your CA file (or run Node with `--use-system-ca`); the tool then still returns offline results.
 
 ## Environment variables
 
-`GITHUB_TOKEN` (optional, higher rate limits) · `SE_MCP_CACHE_DIR` · `SE_MCP_LOG_DIR`
+`GITHUB_TOKEN` (optional, higher rate limits) · `SE_MCP_CACHE_DIR` · `SE_MCP_LOG_DIR` · `SE_MCP_SESSION_ID` ·
+`SE_MCP_TASK_ID` · `SE_MCP_OSV_URL` · `SE_MCP_NPM_URL` · `SE_MCP_PYPI_URL`
 
 ## Design notes
 

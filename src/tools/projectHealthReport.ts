@@ -29,6 +29,12 @@ export async function projectHealthReport(root: string, online = true): Promise<
     recs.push("Upgrade vulnerable dependencies (see Dependencies section).");
   } else if (deps.osvAvailable) strengths.push("No known vulnerabilities reported by OSV.dev.");
   if (deps.error) weaknesses.push(`Dependency scan incomplete: ${deps.error}`);
+  if (deps.outdated.length) {
+    const major = deps.outdated.filter((o) => o.gap === "major").length;
+    weaknesses.push(`${deps.outdated.length} outdated dependenc${deps.outdated.length > 1 ? "ies" : "y"} (${major} behind by a major version).`);
+    recs.push("Update outdated dependencies (see Dependencies section), starting with those behind by a major version.");
+  } else if (deps.registryAvailable) strengths.push("All dependencies are at their latest version.");
+  if (deps.registryError) weaknesses.push(`Outdated-package check incomplete: ${deps.registryError}`);
   if (deps.unpinned.length) recs.push(`Pin versions for: ${deps.unpinned.join(", ")}.`);
   if (!deps.manifests.length) weaknesses.push("No dependency manifest found.");
 
@@ -46,6 +52,7 @@ export async function projectHealthReport(root: string, online = true): Promise<
   lines.push("## Structure", ...repo.topLevel.map((t) => `- ${t}`), "");
   lines.push("## Dependencies", `- Manifests: ${deps.manifests.join(", ") || "none"}`, `- Dependencies: ${deps.dependencies}`);
   for (const v of deps.vulnerable) lines.push(`- **${v.name}@${v.version}**: ${v.vulns.map((x) => `${x.id}${x.fixed ? ` (fixed in ${x.fixed})` : ""}`).join(", ")}`);
+  for (const o of deps.outdated) lines.push(`- Outdated: ${o.name} ${o.current} -> ${o.latest} (${o.gap} update available${o.pinned ? "" : ", declared as a range"})`);
   lines.push("", "## Testing", `- Test files: ${repo.testFiles.length}`, ...repo.testFiles.slice(0, 10).map((t) => `  - ${t}`), "");
   lines.push("## Documentation", `- Completeness: ${docs.score}%`, `- README: ${docs.readme ?? "missing"}`, ...docs.gaps.map((g) => `- Gap: ${g}`), "");
   lines.push("## Issues in Code", ...(todos.length ? todos.slice(0, 10).map((t) => `- ${t.file}:${t.line} ${t.text}`) : ["- No TODO/FIXME markers"]), "");
